@@ -8,4 +8,4 @@ CURRENT_TIMESTAMP() AS timestamp,
 id AS user_id,
 postcode
 
-FROM users_extract
+FROM {{ ref('users_extract') }}
