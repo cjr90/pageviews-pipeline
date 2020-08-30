@@ -10,7 +10,7 @@ WITH postcodes AS (
   postcode AS postcode_as_of_date,
   LAST_VALUE(postcode) OVER(PARTITION BY user_id ORDER BY timestamp ASC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS current_postcode
   
-  FROM postcode_stats
+  FROM {{ ref('postcode_stats') }}
 
 )
 
@@ -22,7 +22,7 @@ pageviews.page_url,
 postcodes.postcode_as_of_date,
 postcodes.current_postcode
 
-FROM stg_pageviews_stats AS pageviews
+FROM {{ ref('stg_pageviews_stats') }} AS pageviews
 LEFT JOIN postcodes 
   ON DATE(pageviews.timestamp) = postcodes.date
   AND pageviews.user_id = postcodes.user_id
