@@ -4,3 +4,19 @@ i.e. which order they should be run.
 It's proposed that these should be run automatically using Airflow on an hourly schedule, which is
 kicked off when the pageviews_extract job runs. dbt dependencies defined using {{ ref('model') }}
 will determine the order of running
+
+      -------------------                                    ---------------
+     | pageviews_extract | (hourly)                         | users_extract | (daily)
+      -------------------                                    ---------------
+                |                                                   |
+                |                                                   |
+                |                                                   |
+      ---------------------                                 ----------------
+     | stg_pageviews_stats | (hourly)                      | postcode_stats | (daily)
+      ---------------------                                 ----------------
+                |                                                   |
+                 ---------------------------------------------------
+                                        |      
+                               -----------------
+                              | pageviews_stats | (hourly) 
+                               -----------------
