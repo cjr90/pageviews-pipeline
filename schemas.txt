@@ -1,0 +1,78 @@
+This document sets out the schemas for all the different tables
+
+TABLE SCHEMAS
+-------------------
+
+*pageviews_extract*
+
+Table that is one row per pageview.
+Displays list of all pageviews for each user id for the past hour only.
+Table refreshed fully once per hour.
+
+Schema:
+
+Column      Datatype  Description
+----------------------------------------------
+user_id     STRING    Unique identifier for a user
+page_url    STRING    URL of the page visited
+
+
+*users_extract*
+
+Table that is one row per user.
+Displays list of user IDs along with the user's latest postcode.
+Table refreshed fully once per day.
+
+Schema:
+
+Column      Datatype  Description
+----------------------------------------------
+id          STRING    Unique identifier for a user
+postcode    STRING    Current postcode of the user
+
+
+*postcode_stats*
+
+Table that is one row per user per day.
+Shows the postcode for each user_id for each day
+Runs once per day, after users_extract is run. Appends all of that new data into this table
+
+Schema:
+
+Column        Datatype    Description
+----------------------------------------------
+timestamp     TIMESTAMP   timestamp marking when record is appended to the table
+user_id       STRING      Unique identifier for a user
+postcode      STRING      Current postcode of the user
+
+
+*stg_pageviews_stats*
+
+One row per pageview per user. Historical view of all pageviews by every user.
+Runs once per hour after pageviews_extract runs. Appends all of that data to this table.
+
+Schema:
+
+Column      Datatype    Description
+----------------------------------------------
+timestamp   TIMESTAMP   timestamp marking when record is appended to the table
+user_id     STRING      Unique identifier for a user
+page_url    STRING      URL of the page visited
+
+
+*pageviews_stats*
+
+One row per pageview per user, enriched with postcode data for the particular user.
+Runs once per hour, depends on stg_pageviews_stats and postcode_stats models
+
+Schema:
+
+Column                Datatype    Description
+----------------------------------------------
+date                  DATE        Date that pageview occurred
+timestamp             TIMESTAMP   Timestamp of when pageview was taken from pageview_extract
+user_id               STRING      Unique identifier for a user
+page_url              STRING      URL of the page visited
+postcode_as_of_date   STRING      postcode for the user_id on the given date. This should never change
+current_postcode      STRING      Most recent postcode for the given user. This will be the same for any given user across
+                                  all dates and will change as their postcode updates
