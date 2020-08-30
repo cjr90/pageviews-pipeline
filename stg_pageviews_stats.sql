@@ -8,4 +8,4 @@ CURRENT_TIMESTAMP() AS timestamp,
 user_id,
 page_url
 
-FROM pageviews_extract
+FROM {{ ref('pageviews_extract') }}
