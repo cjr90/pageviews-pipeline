@@ -1,0 +1,10 @@
+Table that is one line per pageview.
+Displays list of all pageviews for each user id for the past hour only.
+Table refreshed fully once per hour.
+
+Schema:
+
+Column      Datatype  Description
+----------------------------------------------
+user_id     STRING    Unique identifier for a user
+url         STRING    URL of the page visited
