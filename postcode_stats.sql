@@ -5,7 +5,7 @@ INSERT postcode_stats
 
 SELECT
 CURRENT_TIMESTAMP() AS timestamp,
-id,
+id AS user_id,
 postcode
 
 FROM users_extract
