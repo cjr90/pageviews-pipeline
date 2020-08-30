@@ -2,8 +2,8 @@ This document sets out the dependencies between all the tables in the pageviews 
 i.e. which order they should be run.
 
 It's proposed that these should be run automatically using Airflow on an hourly schedule, which is
-kicked off when the pageviews_extract job runs. dbt dependencies defined using {{ ref('model') }}
-will determine the order of running
+kicked off when the pageviews_extract job runs. dbt dependencies defined using the built-in dbt macro
+{{ ref('model') }} within data models will determine the order of running
 
       -------------------                                    ---------------
      | pageviews_extract | (hourly)                         | users_extract | (daily)
