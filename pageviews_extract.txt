@@ -7,4 +7,4 @@ Schema:
 Column      Datatype  Description
 ----------------------------------------------
 user_id     STRING    Unique identifier for a user
-url         STRING    URL of the page visited
+page_url         STRING    URL of the page visited
